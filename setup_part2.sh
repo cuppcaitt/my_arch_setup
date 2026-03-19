@@ -20,7 +20,8 @@ echo "LANG=en_US.UTF-8" > /etc/locale.conf
 # PACKAGES #
 ############
 
-pacman -S \
+echo "Installing packages..."
+pacman -S --noconfirm \
 
 	# Basic
 	networkmanager ufw git vim sudo \
@@ -28,12 +29,29 @@ pacman -S \
 	# Drivers
 	mesa xf86-video-amdgpu vulkan-radeon rocm-opencl-runtime \
 
-	# System
-	fastfetch plasma dolphin kitty ark flatpak fuse \
-
 	# Fonts
 	noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra \
+	
+	# System
+	fastfetch flatpak fuse
 
+	read -p "Choose a DE (1-KDE 2-GNOME): " opcao
+	case $opcao in
+  1)
+    echo "Installing GNOME..."
+    pacman -S --noconfirm gnome kitty extension-manager
+    systemctl enable gdm.service
+    ;;
+  2)
+    echo "Installing KDE..."
+    pacman -S --noconfirm plasma kitty dolphin ark
+    systemctl enable plasmalogin.service
+    ;;
+  *)
+    echo "Invalid Option!"
+    exit 1
+    ;;
+	
 ########
 # USER #
 ########
