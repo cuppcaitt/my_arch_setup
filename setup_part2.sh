@@ -3,38 +3,44 @@ HOSTNAME=$1
 USER=$2
 DISK=$3
 
-#        #
+##########
 # REGION #
-#        #
+##########
+
+# timezone
 ln -sf /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime
 hwclock --systohc
+
+# locales
 sed -i 's/^#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
 locale-gen
 echo "LANG=en_US.UTF-8" > /etc/locale.conf
 
-#          #
+############
 # PACKAGES #
-#          #
+############
+
 pacman -S \
-	#
+
 	# Basic
 	networkmanager ufw git vim sudo \
-	# 
+
 	# Drivers
 	mesa xf86-video-amdgpu vulkan-radeon rocm-opencl-runtime \
-	#
+
 	# System
 	fastfetch plasma dolphin kitty ark flatpak fuse \
-	#
+
 	# Fonts
 	noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra \
 
-#      #
+########
 # USER #
-#      #
-echo "Configurando usuário: $USER"
+########
+
+echo "Configuring user: $USER"
 useradd -m -G wheel $USER
-echo "Defina a senha para $USER:"
+echo "$USER password:"
 passwd $USER
 echo $HOSTNAME > /etc/hostname
 
