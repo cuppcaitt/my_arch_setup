@@ -46,6 +46,7 @@ pacman -S --noconfirm \
     echo "Installing KDE..."
     pacman -S --noconfirm plasma kitty dolphin ark
     systemctl enable plasmalogin.service
+	sudo -u $USER dbus-launch kwriteconfig6 --file kdeglobals --group General --key TerminalApplication kitty
     ;;
   *)
     echo "Invalid Option!"
@@ -65,13 +66,9 @@ echo $HOSTNAME > /etc/hostname
 # Sudo
 sed -i 's/^# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/' /etc/sudoers
 
-# Default Terminal
-sudo -u $USER dbus-launch kwriteconfig6 --file kdeglobals --group General --key TerminalApplication kitty
-
 # Services
 systemctl enable NetworkManager.service
 systemctl enable ufw.service
-systemctl enable plasmalogin.service
 
 # Finish
 rm /chroot_setup.sh
